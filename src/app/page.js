@@ -8,21 +8,41 @@ import Products from "./components/Products";
 import Categories from "./components/Categories";
 
 export default function Home() {
-  const [date, setData] = useState(data);
-  const [filterData, setFilterData] = useState([]);
+  const [products, setProducts] = useState(data);
+  const [filterData, setFilterData] = useState(products);
   const [search, setSearch] = useState("");
+  const [categories, setCategories] = useState("all");
 
   useEffect(() => {
-    let filteredShoes = [...date];
-
-    filteredShoes = data.filter(({ title }) =>
-      title.toLowerCase().includes(search.toLowerCase())
-    );
-
+    let filteredShoes = [...products];
+    console.log(filteredShoes);
     setFilterData(filteredShoes);
 
-    // }
-  }, [search]);
+    if (search !== "") {
+      console.log("working");
+      filteredShoes = data.filter(({ title }) =>
+        title.toLowerCase().includes(search.toLowerCase())
+      );
+      setFilterData(filteredShoes);
+    }
+    if (categories !== "all") {
+      filteredShoes = data.filter(({ category }) =>
+        category.includes(categories)
+      );
+      setFilterData(filteredShoes);
+    }
+
+    if (search !== "" && categories !== "all") {
+      filteredShoes = data.filter(({ category, title }) => {
+        const titleMatch = title.toLowerCase().includes(search.toLowerCase());
+        const categoryMatch = category.includes(categories);
+        return titleMatch & categoryMatch;
+      });
+      setFilterData(filteredShoes);
+    }
+
+    // setFilterData(filteredShoes);
+  }, [search, categories]);
 
   const handleOnChange = (e) => {
     const { value } = e.target;
@@ -73,7 +93,7 @@ export default function Home() {
         </div>
       </div>
       <div className='category'>
-        <Categories />
+        <Categories setCategories={setCategories} categories={categories} />
       </div>
     </div>
   );
