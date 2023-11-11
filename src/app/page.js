@@ -8,8 +8,35 @@ import Products from "./components/Products";
 
 export default function Home() {
   const [date, setData] = useState(data);
+  const [filterData, setFilterData] = useState([]);
+  const [search, setSearch] = useState("");
 
-  console.log(data);
+  useEffect(() => {
+    let filter = [];
+
+    if (search !== "") {
+      filter = data.filter((item) => {
+        const title = item.title;
+        let term = title.split(" ");
+        if (term.includes(search)) {
+          return item;
+        }
+      });
+
+      if (filter.length === 0) {
+        console.log("hello");
+        setFilterData(date);
+      } else {
+        setFilterData(filter);
+      }
+    }
+  }, [search]);
+
+  const handleOnChange = (e) => {
+    const { value } = e.target;
+    setSearch(value);
+  };
+
   return (
     <div className='main'>
       <div className='rcommended p-4 max-w-6xl mx-auto'>
@@ -18,6 +45,7 @@ export default function Home() {
             <input
               type='text'
               className='py-2 px-8 border-none rounded bg-slate-100 outline-none '
+              onChange={handleOnChange}
             />
           </div>
 
@@ -48,7 +76,7 @@ export default function Home() {
             </div>
           </div>
           <div className='all-products'>
-            <Products data={date} />
+            <Products data={filterData} />
           </div>
         </div>
       </div>
