@@ -5,6 +5,7 @@ import { FiHeart } from "react-icons/fi";
 import { AiOutlineShoppingCart, AiOutlineUserAdd } from "react-icons/ai";
 import data from "./data/data";
 import Products from "./components/Products";
+import Categories from "./components/Categories";
 
 export default function Home() {
   const [date, setData] = useState(data);
@@ -12,24 +13,15 @@ export default function Home() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    let filter = [];
+    let filteredShoes = [...date];
 
-    if (search !== "") {
-      filter = data.filter((item) => {
-        const title = item.title;
-        let term = title.split(" ");
-        if (term.includes(search)) {
-          return item;
-        }
-      });
+    filteredShoes = data.filter(({ title }) =>
+      title.toLowerCase().includes(search.toLowerCase())
+    );
 
-      if (filter.length === 0) {
-        console.log("hello");
-        setFilterData(date);
-      } else {
-        setFilterData(filter);
-      }
-    }
+    setFilterData(filteredShoes);
+
+    // }
   }, [search]);
 
   const handleOnChange = (e) => {
@@ -38,7 +30,7 @@ export default function Home() {
   };
 
   return (
-    <div className='main'>
+    <div className='main flex ju'>
       <div className='rcommended p-4 max-w-6xl mx-auto'>
         <div className='flex justify-between'>
           <div className='search'>
@@ -80,7 +72,9 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className='category'></div>
+      <div className='category'>
+        <Categories />
+      </div>
     </div>
   );
 }
