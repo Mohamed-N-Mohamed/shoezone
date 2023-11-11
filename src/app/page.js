@@ -12,7 +12,7 @@ export default function Home() {
   console.log(data);
   return (
     <div className='main'>
-      <div className='rcommended p-4 max-w-5xl mx-auto'>
+      <div className='rcommended p-4 max-w-6xl mx-auto'>
         <div className='flex justify-between'>
           <div className='search'>
             <input
@@ -47,7 +47,7 @@ export default function Home() {
               Vars
             </div>
           </div>
-          <div className='all-products p-4'>
+          <div className='all-products'>
             <Products data={date} />
           </div>
         </div>
